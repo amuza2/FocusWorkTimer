@@ -24,6 +24,7 @@
 ### Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) or later.
+- Used Material.Icons.Avalonia package for Icons
 
 ### Steps
 
