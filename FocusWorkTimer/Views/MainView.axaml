@@ -1,16 +1,443 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:FocusWorkTimer.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FocusWorkTimer.Views.MainView"
-             x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
-  </Design.DataContext>
+<UserControl
+    Height="700"
+    Width="400"
+    d:DesignHeight="700"
+    d:DesignWidth="400"
+    mc:Ignorable="d"
+    x:Class="FocusWorkTimer.Views.MainView"
+    x:DataType="vm:MainViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:animations="clr-namespace:FocusWorkTimer.Animations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:FocusWorkTimer.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <UserControl.Styles>
+        <Style Selector="TabControl:normal /template/ ContentPresenter">
+            <Style.Animations>
+                <Animation
+                    Duration="0:0:0.5"
+                    Easing="CubicEaseOut"
+                    FillMode="Forward">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.X" Value="100" />
+                        <Setter Property="Opacity" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="TabControl:reverse /template/ ContentPresenter">
+            <Style.Animations>
+                <Animation
+                    Duration="0:0:0.5"
+                    Easing="CubicEaseOut"
+                    FillMode="Backward">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.X" Value="-100" />
+                        <Setter Property="Opacity" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="Opacity" Value="1" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
+        <Style Selector="TabItem /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="10,16" />
+            <Setter Property="Margin" Value="8,0" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#94A3B8" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style Selector="TabItem:selected /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="#F1F5F9" />
+        </Style>
+
+        <Style Selector="TabItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="#CBD5E1" />
+        </Style>
+
+        <Style Selector="Button.control-btn /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1E293B" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Duration="0:0:0.2" Property="Background" />
+                    <TransformOperationsTransition Duration="0:0:0.2" Property="RenderTransform" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.control-btn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#334155" />
+            <Setter Property="RenderTransform" Value="scale(1.05)" />
+        </Style>
+
+        <Style Selector="Button.control-btn:pressed /template/ ContentPresenter">
+            <Setter Property="RenderTransform" Value="scale(0.95)" />
+        </Style>
+
+        <Style Selector="Button.primary-btn /template/ ContentPresenter">
+            <Setter Property="Background" Value="#667EEA" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Duration="0:0:0.2" Property="Background" />
+                    <TransformOperationsTransition Duration="0:0:0.2" Property="RenderTransform" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.primary-btn:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#5A67D8" />
+            <Setter Property="RenderTransform" Value="scale(1.05)" />
+        </Style>
+
+        <Style Selector="TextBox.modern-input">
+            <Setter Property="Background" Value="#1E293B" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Padding" Value="20,16" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#F1F5F9" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Duration="0:0:0.2" Property="Background" />
+                    <ThicknessTransition Duration="0:0:0.2" Property="BorderThickness" />
+                    <BrushTransition Duration="0:0:0.2" Property="BorderBrush" />
+                    <TransformOperationsTransition Duration="0:0:0.2" Property="RenderTransform" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="TextBox.modern-input:focus">
+            <Setter Property="Background" Value="#334155" />
+            <Setter Property="BorderBrush" Value="#667EEA" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="RenderTransform" Value="scale(1.02)" />
+        </Style>
+
+        <Style Selector="ListBox.modern-list">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style Selector="ListBoxItem">
+            <Setter Property="Background" Value="#1E293B" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Margin" Value="0,4" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style Selector="ListBoxItem:pointerover">
+            <Setter Property="Background" Value="#334155" />
+        </Style>
+
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="#F1F5F9" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Duration="0:0:0.1" Property="RenderTransform" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="CheckBox:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.1)" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Background="#0F172A">
+        <animations:AnimateTabControl AnimationType="DEFAULT" SkipInitialAnimation="True">
+            <!--  Timer Tab  -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <materialIcons:MaterialIcon
+                            Height="20"
+                            Kind="TimerOutline"
+                            Width="20" />
+                        <TextBlock Text="Timer" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <ScrollViewer>
+                    <StackPanel Margin="40" Spacing="32">
+                        <!--  Session Type  -->
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="#94A3B8"
+                            HorizontalAlignment="Center"
+                            Text="{Binding SessionType}"
+                            TextAlignment="Center" />
+
+                        <!--  Timer Display  -->
+                        <TextBlock
+                            FontFamily="SF Mono, Consolas, monospace"
+                            FontSize="64"
+                            FontWeight="Light"
+                            Foreground="#F1F5F9"
+                            HorizontalAlignment="Center"
+                            Text="{Binding TimeDisplay}"
+                            TextAlignment="Center" />
+
+                        <!--  Control Buttons  -->
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="16">
+                            <Button Classes="primary-btn" Command="{Binding StartTimerCommand}">
+                                <materialIcons:MaterialIcon
+                                    Height="32"
+                                    Kind="{Binding PlayPauseIcon}"
+                                    Width="32" />
+                            </Button>
+                            <Button Classes="control-btn" Command="{Binding ResetTimerCommand}">
+                                <materialIcons:MaterialIcon
+                                    Height="32"
+                                    Kind="{Binding ResetIcon}"
+                                    Width="32" />
+                            </Button>
+                        </StackPanel>
+
+                        <!--  Statistics Panel  -->
+                        <Border
+                            Background="#1E293B"
+                            CornerRadius="20"
+                            Padding="24">
+                            <StackPanel Spacing="16">
+                                <TextBlock
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="#94A3B8"
+                                    Text="STATISTICS"
+                                    TextAlignment="Center" />
+
+                                <StackPanel Spacing="12">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock
+                                            FontSize="15"
+                                            Foreground="#94A3B8"
+                                            Grid.Column="0"
+                                            Text="Completed Pomodoros" />
+                                        <TextBlock
+                                            FontSize="15"
+                                            FontWeight="SemiBold"
+                                            Foreground="#F1F5F9"
+                                            Grid.Column="1"
+                                            Text="{Binding PomodoroCount}" />
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock
+                                            FontSize="15"
+                                            Foreground="#94A3B8"
+                                            Grid.Column="0"
+                                            Text="Total Focus Time" />
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <TextBlock
+                                                FontSize="15"
+                                                FontWeight="SemiBold"
+                                                Foreground="#F1F5F9"
+                                                Text="{Binding TotalTimeText}" />
+                                            <TextBlock
+                                                FontSize="15"
+                                                Foreground="#94A3B8"
+                                                Text=" min" />
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!--  Tasks Tab  -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <materialIcons:MaterialIcon
+                            Height="20"
+                            Kind="ClipboardEditOutline"
+                            Width="20" />
+                        <TextBlock Text="Tasks" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <ScrollViewer>
+                    <StackPanel Margin="40" Spacing="32">
+                        <!--  Task Statistics  -->
+                        <Border
+                            Background="#1E293B"
+                            CornerRadius="20"
+                            Padding="24">
+                            <StackPanel Spacing="12">
+                                <TextBlock
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="#94A3B8"
+                                    Text="TASK PROGRESS"
+                                    TextAlignment="Center" />
+                                <TextBlock
+                                    FontSize="15"
+                                    Foreground="#F1F5F9"
+                                    Text="{Binding TaskStatsText}"
+                                    TextAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Task Input  -->
+                        <TextBox
+                            Classes="modern-input"
+                            Text="{Binding NewTaskText}"
+                            Watermark="Add a new task...">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Command="{Binding AddTaskCommand}" Gesture="Enter" />
+                            </TextBox.KeyBindings>
+                        </TextBox>
+
+                        <!--  Tasks List  -->
+                        <StackPanel Spacing="16">
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Foreground="#CBD5E1"
+                                Text="Your Tasks" />
+
+                            <ListBox
+                                Classes="modern-list"
+                                ItemsSource="{Binding Tasks}"
+                                MaxHeight="300">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="Auto,*,Auto" Margin="8">
+                                            <CheckBox
+                                                Command="{Binding $parent[ListBox].((vm:MainViewModel)DataContext).ToggleTaskCommand}"
+                                                CommandParameter="{Binding}"
+                                                Grid.Column="0"
+                                                Margin="0,0,16,0"
+                                                VerticalAlignment="Center" />
+                                            <TextBlock
+                                                FontSize="15"
+                                                Foreground="#F1F5F9"
+                                                Grid.Column="1"
+                                                Text="{Binding Text}"
+                                                TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToTextDecorationsConverter}}"
+                                                TextWrapping="Wrap"
+                                                VerticalAlignment="Center" />
+                                            <Button
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Command="{Binding $parent[ListBox].((vm:MainViewModel)DataContext).RemoveTaskCommand}"
+                                                CommandParameter="{Binding}"
+                                                Grid.Column="2"
+                                                Padding="8"
+                                                VerticalAlignment="Center">
+                                                <materialIcons:MaterialIcon
+                                                    Foreground="#EF4444"
+                                                    Height="16"
+                                                    Kind="Delete"
+                                                    Width="16" />
+                                            </Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!--  Settings Tab  -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <materialIcons:MaterialIcon
+                            Height="20"
+                            Kind="CogOutline"
+                            Width="20" />
+                        <TextBlock Text="Settings" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <ScrollViewer>
+                    <StackPanel Margin="40" Spacing="32">
+                        <!--  Settings Panel  -->
+                        <Border
+                            Background="#1E293B"
+                            CornerRadius="20"
+                            Padding="32">
+                            <StackPanel Spacing="24">
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="SemiBold"
+                                    Foreground="#CBD5E1"
+                                    Text="Timer Duration" />
+
+                                <StackPanel Spacing="20">
+                                    <Grid ColumnDefinitions="*,120">
+                                        <TextBlock
+                                            FontSize="15"
+                                            Foreground="#94A3B8"
+                                            Grid.Column="0"
+                                            Text="Work Session"
+                                            VerticalAlignment="Center" />
+                                        <NumericUpDown
+                                            Grid.Column="1"
+                                            Increment="5"
+                                            Maximum="120"
+                                            Minimum="1"
+                                            ShowButtonSpinner="True"
+                                            Value="{Binding WorkDuration}" />
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,120">
+                                        <TextBlock
+                                            FontSize="15"
+                                            Foreground="#94A3B8"
+                                            Grid.Column="0"
+                                            Text="Break Session"
+                                            VerticalAlignment="Center" />
+                                        <NumericUpDown
+                                            FormatString="00"
+                                            Grid.Column="1"
+                                            Maximum="30"
+                                            Minimum="1"
+                                            ShowButtonSpinner="True"
+                                            Value="{Binding BreakDuration}" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </animations:AnimateTabControl>
+    </Grid>
+
 </UserControl>

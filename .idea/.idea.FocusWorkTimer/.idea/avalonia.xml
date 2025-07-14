@@ -3,7 +3,9 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
-        <entry key="FocusWorkTimer/Views/MainView.axaml" value="FocusWorkTimer.Browser/FocusWorkTimer.Browser.csproj" />
+        <entry key="FocusWorkTimer/App.axaml" value="FocusWorkTimer.Browser/FocusWorkTimer.Browser.csproj" />
+        <entry key="FocusWorkTimer/Views/MainView.axaml" value="FocusWorkTimer.Desktop/FocusWorkTimer.Desktop.csproj" />
+        <entry key="FocusWorkTimer/Views/MainWindow.axaml" value="FocusWorkTimer.Browser/FocusWorkTimer.Browser.csproj" />
       </map>
     </option>
   </component>
